@@ -58,6 +58,23 @@ export function loadGameState(): GameState {
     const state: GameState = JSON.parse(stored);
     const today = getCurrentUTCDate();
 
+    // Backfill missing comparison fields from older stored guesses
+    const normalizedGuesses = state.guesses.map((guess) => {
+      if (!guess?.comparison?.species) {
+        return {
+          ...guess,
+          comparison: {
+            ...guess.comparison,
+            species: {
+              value: '—',
+              is_correct: false,
+            },
+          },
+        };
+      }
+      return guess;
+    });
+
     // Check if it's a new day
     if (state.currentDate !== today) {
       // New day detected - check if streak should be maintained
@@ -76,10 +93,14 @@ export function loadGameState(): GameState {
         totalGamesPlayed: state.totalGamesPlayed,
         totalWins: state.totalWins,
         lastPlayedDate: state.lastPlayedDate,
+        guesses: normalizedGuesses,
       };
     }
 
-    return state;
+    return {
+      ...state,
+      guesses: normalizedGuesses,
+    };
   } catch (error) {
     console.error('Error loading game state:', error);
     return createInitialState();

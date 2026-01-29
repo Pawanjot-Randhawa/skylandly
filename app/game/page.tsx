@@ -179,18 +179,19 @@ export default function GamePage() {
             <h2 className="text-xl font-semibold mb-4">Your Guesses</h2>
             
             {/* Header Row */}
-            <div className="grid grid-cols-4 gap-2 font-semibold text-sm mb-2">
+            <div className="grid grid-cols-5 gap-2 font-semibold text-sm mb-2">
               <div className="text-center">Name</div>
               <div className="text-center">Element</div>
               <div className="text-center">Gender</div>
               <div className="text-center">Game</div>
+              <div className="text-center">Species</div>
             </div>
 
             {/* Guess Rows */}
             {gameState.guesses.map((guess, index) => {
               const imageData = SKYLANDER_IMAGES[guess.comparison.name.value];
               return (
-                <div key={index} className="grid grid-cols-4 gap-2">
+                <div key={index} className="grid grid-cols-5 gap-2">
                   {/* Name with image */}
                   <div
                     className={`p-3 rounded flex flex-col items-center justify-center ${
@@ -247,6 +248,19 @@ export default function GamePage() {
                   >
                     <span className="text-sm font-medium">
                       {guess.comparison.game.value}
+                    </span>
+                  </div>
+
+                  {/* Species */}
+                  <div
+                    className={`p-3 rounded flex items-center justify-center ${
+                      guess.comparison.species?.is_correct
+                        ? 'bg-green-500 text-white'
+                        : 'bg-red-500 text-white'
+                    }`}
+                  >
+                    <span className="text-sm font-medium">
+                      {guess.comparison.species?.value ?? '—'}
                     </span>
                   </div>
                 </div>

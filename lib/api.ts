@@ -12,6 +12,7 @@ export interface CompareResult {
   element: AttributeComparison;
   gender: AttributeComparison;
   game: AttributeComparison;
+  species: AttributeComparison;
 }
 
 export interface GuessResponse {
