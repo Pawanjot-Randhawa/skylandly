@@ -11,6 +11,7 @@ export default function GamePage() {
   const [inputValue, setInputValue] = useState('');
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -56,9 +57,11 @@ export default function GamePage() {
       );
       setFilteredSuggestions(filtered);
       setShowSuggestions(true);
+      setSelectedSuggestionIndex(filtered.length > 0 ? 0 : -1);
     } else {
       setFilteredSuggestions([]);
       setShowSuggestions(false);
+      setSelectedSuggestionIndex(-1);
     }
   }, [inputValue, skylanderNames]);
 
@@ -83,6 +86,34 @@ export default function GamePage() {
 
   const handleSuggestionClick = (name: string) => {
     handleGuess(name);
+  };
+
+  // Handle keyboard navigation in suggestions
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showSuggestions || filteredSuggestions.length === 0) return;
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setSelectedSuggestionIndex((current) =>
+        Math.min(current + 1, filteredSuggestions.length - 1)
+      );
+      return;
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setSelectedSuggestionIndex((current) => Math.max(current - 1, 0));
+      return;
+    }
+
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      const indexToUse = selectedSuggestionIndex >= 0 ? selectedSuggestionIndex : 0;
+      const selectedName = filteredSuggestions[indexToUse];
+      if (selectedName) {
+        handleGuess(selectedName);
+      }
+    }
   };
 
   if (isLoading && !gameState) {
@@ -141,6 +172,7 @@ export default function GamePage() {
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleInputKeyDown}
               placeholder="Type a Skylander name..."
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               disabled={isLoading}
@@ -149,13 +181,17 @@ export default function GamePage() {
             {/* Autocomplete Dropdown */}
             {showSuggestions && filteredSuggestions.length > 0 && (
               <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                {filteredSuggestions.map((name) => {
+                {filteredSuggestions.map((name, index) => {
                   const imageData = SKYLANDER_IMAGES[name];
+                  const isSelected = index === selectedSuggestionIndex;
                   return (
                     <button
                       key={name}
                       onClick={() => handleSuggestionClick(name)}
-                      className="w-full flex items-center gap-3 px-4 py-2 hover:bg-blue-50 text-left"
+                      className={`w-full flex items-center gap-3 px-4 py-2 text-left ${
+                        isSelected ? 'bg-blue-100' : 'hover:bg-blue-50'
+                      }`}
+                      aria-selected={isSelected}
                     >
                       {imageData && (
                         <img
