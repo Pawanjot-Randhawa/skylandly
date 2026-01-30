@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { fetchDailySkylander, fetchSkylanderNames, submitGuess, GuessResponse } from '@/lib/api';
 import { loadGameState, saveGameState, addGuess, setDailyTarget, GameState, getCurrentLocalDate } from '@/lib/gameState';
 import { SKYLANDER_IMAGES } from '@/lib/data/skylandersImages';
+import { GAME_IMAGES } from '@/lib/data/gameImages';
 
 export default function GamePage() {
   const [gameState, setGameState] = useState<GameState | null>(null);
@@ -281,15 +282,19 @@ export default function GamePage() {
 
                   {/* Game */}
                   <div
-                    className={`p-3 rounded flex items-center justify-center ${
+                    className={`p-3 rounded flex flex-col items-center justify-center ${
                       guess.comparison.game.is_correct
                         ? 'bg-green-500 text-white'
                         : 'bg-red-500 text-white'
                     }`}
                   >
-                    <span className="text-sm font-medium">
-                      {guess.comparison.game.value}
-                    </span>
+                    {GAME_IMAGES[guess.comparison.game.value] && (
+                      <img
+                        src={GAME_IMAGES[guess.comparison.game.value].img}
+                        alt={guess.comparison.game.value}
+                        className="w-16 h-10 object-contain mb-1"
+                      />
+                    )}
                   </div>
 
                   {/* Species */}
