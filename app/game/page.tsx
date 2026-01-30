@@ -153,7 +153,7 @@ export default function GamePage() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">Skylandly</h1>
+          <h1 className="text-5xl font-bold mb-2 font-bungee">Skylandly</h1>
           <p className="text-gray-600">Guess today&apos;s Skylander!</p>
           <div className="mt-4">
             <span className="text-sm font-semibold px-3 py-1 bg-blue-100 text-blue-800 rounded">
@@ -165,7 +165,7 @@ export default function GamePage() {
         {/* Game Status */}
         {gameState.gameStatus === 'won' && (
           <div className="mb-6 p-4 bg-green-100 border border-green-400 rounded text-center">
-            <p className="text-green-800 font-semibold text-lg">
+            <p className="text-green-800 font-semibold text-lg font-fredoka">
               🎉 Congratulations! You guessed it in {gameState.guesses.length} {gameState.guesses.length === 1 ? 'try' : 'tries'}!
             </p>
           </div>
@@ -180,7 +180,7 @@ export default function GamePage() {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleInputKeyDown}
               placeholder="Type a Skylander name..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-manrope"
               disabled={isLoading}
             />
 
@@ -206,7 +206,7 @@ export default function GamePage() {
                           className="w-10 h-10 object-contain"
                         />
                       )}
-                      <span className="font-medium">{name}</span>
+                      <span className="font-fredoka font-medium">{name}</span>
                     </button>
                   );
                 })}
@@ -218,15 +218,15 @@ export default function GamePage() {
         {/* Guesses Grid */}
         {gameState.guesses.length > 0 && (
           <div className="space-y-2">
-            <h2 className="text-xl font-semibold mb-4">Your Guesses</h2>
+            <h2 className="text-xl font-semibold mb-4 font-fredoka">Your Guesses</h2>
             
             {/* Header Row */}
-            <div className="grid grid-cols-5 gap-2 font-semibold text-sm mb-2">
+            <div className="grid grid-cols-5 gap-2 font-semibold text-lg mb-2 font-fredoka">
               <div className="text-center">Name</div>
-              <div className="text-center">Element</div>
               <div className="text-center">Gender</div>
-              <div className="text-center">Game</div>
               <div className="text-center">Species</div>
+              <div className="text-center">Element</div>
+              <div className="text-center">Game</div>
             </div>
 
             {/* Guess Rows */}
@@ -246,24 +246,11 @@ export default function GamePage() {
                       <img
                         src={imageData.img}
                         alt={guess.comparison.name.value}
-                        className="w-12 h-12 object-contain mb-1"
+                        className="w-20 h-20 object-contain mb-1"
                       />
                     )}
-                    <span className="text-sm font-medium text-center">
+                    <span className="font-fredoka text-2xl font-medium text-center">
                       {guess.comparison.name.value}
-                    </span>
-                  </div>
-
-                  {/* Element */}
-                  <div
-                    className={`p-3 rounded flex items-center justify-center ${
-                      guess.comparison.element.is_correct
-                        ? 'bg-green-500 text-white'
-                        : 'bg-red-500 text-white'
-                    }`}
-                  >
-                    <span className="text-sm font-medium">
-                      {guess.comparison.element.value}
                     </span>
                   </div>
 
@@ -275,8 +262,34 @@ export default function GamePage() {
                         : 'bg-red-500 text-white'
                     }`}
                   >
-                    <span className="text-sm font-medium">
+                    <span className="text-2xl font-medium font-fredoka">
                       {guess.comparison.gender.value}
+                    </span>
+                  </div>
+
+                  {/* Species */}
+                  <div
+                    className={`p-3 rounded flex items-center justify-center ${
+                      guess.comparison.species?.is_correct
+                        ? 'bg-green-500 text-white'
+                        : 'bg-red-500 text-white'
+                    }`}
+                  >
+                    <span className="text-2xl font-fredoka font-medium">
+                      {guess.comparison.species?.value ?? '—'}
+                    </span>
+                  </div>
+
+                  {/* Element */}
+                  <div
+                    className={`p-3 rounded flex items-center justify-center ${
+                      guess.comparison.element.is_correct
+                        ? 'bg-green-500 text-white'
+                        : 'bg-red-500 text-white'
+                    }`}
+                  >
+                    <span className="text-2xl font-medium font-fredoka">
+                      {guess.comparison.element.value}
                     </span>
                   </div>
 
@@ -292,23 +305,11 @@ export default function GamePage() {
                       <img
                         src={GAME_IMAGES[guess.comparison.game.value].img}
                         alt={guess.comparison.game.value}
-                        className="w-16 h-10 object-contain mb-1"
+                        className="object-contain mb-1"
                       />
                     )}
                   </div>
 
-                  {/* Species */}
-                  <div
-                    className={`p-3 rounded flex items-center justify-center ${
-                      guess.comparison.species?.is_correct
-                        ? 'bg-green-500 text-white'
-                        : 'bg-red-500 text-white'
-                    }`}
-                  >
-                    <span className="text-sm font-medium">
-                      {guess.comparison.species?.value ?? '—'}
-                    </span>
-                  </div>
                 </div>
               );
             })}
@@ -318,13 +319,13 @@ export default function GamePage() {
         {/* Empty State */}
         {gameState.guesses.length === 0 && (
           <div className="text-center py-12 text-gray-500">
-            <p>Make your first guess to start playing!</p>
+            <p className="font-fredoka">Make your first guess to start playing!</p>
           </div>
         )}
 
         {/* Back to Home */}
         <div className="mt-8 text-center">
-          <a href="/" className="text-blue-500 hover:underline">
+          <a href="/" className="text-blue-500 hover:underline font-fredoka">
             ← Back to Home
           </a>
         </div>

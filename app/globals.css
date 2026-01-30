@@ -22,5 +22,20 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-manrope);
+}
+.font-bungee {
+  font-family: var(--font-bungee);
+}
+
+.font-fredoka {
+  font-family: var(--font-fredoka);
+}
+
+.font-luckiest {
+  font-family: var(--font-luckiest-guy);
+}
+
+.font-titan {
+  font-family: var(--font-titan-one);
 }
