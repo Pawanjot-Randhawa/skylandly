@@ -188,7 +188,7 @@ export default function GamePage() {
             </div>
 
             {/* Guess Rows */}
-            {gameState.guesses.map((guess, index) => {
+            {[...gameState.guesses].reverse().map((guess, index) => {
               const imageData = SKYLANDER_IMAGES[guess.comparison.name.value];
               return (
                 <div key={index} className="grid grid-cols-5 gap-2">
