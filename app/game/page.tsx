@@ -55,10 +55,11 @@ export default function GamePage() {
       const guessedNames = new Set(
         gameState?.guesses.map((guess) => guess.comparison.name.value) ?? []
       );
-      const filtered = skylanderNames.filter((name) =>
-        name.toLowerCase().includes(inputValue.toLowerCase()) &&
-        !guessedNames.has(name)
-      );
+      const query = inputValue.trim().toLowerCase();
+      const filtered = skylanderNames.filter((name) => {
+        const normalizedName = name.toLowerCase();
+        return normalizedName.startsWith(query) && !guessedNames.has(name);
+      });
       setFilteredSuggestions(filtered);
       setShowSuggestions(true);
       setSelectedSuggestionIndex(filtered.length > 0 ? 0 : -1);
