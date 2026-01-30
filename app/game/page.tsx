@@ -49,11 +49,15 @@ export default function GamePage() {
     initGame();
   }, []);
 
-  // Filter suggestions based on input
+  // Filter suggestions based on input, excluding already-guessed names
   useEffect(() => {
     if (inputValue.trim().length > 0) {
+      const guessedNames = new Set(
+        gameState?.guesses.map((guess) => guess.comparison.name.value) ?? []
+      );
       const filtered = skylanderNames.filter((name) =>
-        name.toLowerCase().includes(inputValue.toLowerCase())
+        name.toLowerCase().includes(inputValue.toLowerCase()) &&
+        !guessedNames.has(name)
       );
       setFilteredSuggestions(filtered);
       setShowSuggestions(true);
@@ -63,7 +67,7 @@ export default function GamePage() {
       setShowSuggestions(false);
       setSelectedSuggestionIndex(-1);
     }
-  }, [inputValue, skylanderNames]);
+  }, [inputValue, skylanderNames, gameState]);
 
   const handleGuess = async (selectedName: string) => {
     if (!gameState || gameState.gameStatus !== 'playing') return;
