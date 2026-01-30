@@ -5,6 +5,7 @@ import { fetchDailySkylander, fetchSkylanderNames, submitGuess, GuessResponse } 
 import { loadGameState, saveGameState, addGuess, setDailyTarget, GameState, getCurrentLocalDate } from '@/lib/gameState';
 import { SKYLANDER_IMAGES } from '@/lib/data/skylandersImages';
 import { GAME_IMAGES } from '@/lib/data/gameImages';
+import { ELEMENT_IMAGES } from '@/lib/data/elementImages';
 
 export default function GamePage() {
   const [gameState, setGameState] = useState<GameState | null>(null);
@@ -282,12 +283,19 @@ export default function GamePage() {
 
                   {/* Element */}
                   <div
-                    className={`p-3 rounded flex items-center justify-center ${
+                    className={`p-3 rounded flex flex-col items-center justify-center ${
                       guess.comparison.element.is_correct
                         ? 'bg-green-500 text-white'
                         : 'bg-red-500 text-white'
                     }`}
                   >
+                    {ELEMENT_IMAGES[guess.comparison.element.value] && (
+                      <img
+                        src={ELEMENT_IMAGES[guess.comparison.element.value].img}
+                        alt={guess.comparison.element.value}
+                        className="w-20 h-20 object-contain mb-1"
+                      />
+                    )}
                     <span className="text-2xl font-medium font-fredoka">
                       {guess.comparison.element.value}
                     </span>
