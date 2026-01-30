@@ -81,7 +81,7 @@ export default function HistoryPage() {
             </li>
             <li className="flex items-start">
               <span className="mr-2">🕐</span>
-              <span>A new Skylander is available every day at midnight UTC</span>
+              <span>A new Skylander is available every day at midnight</span>
             </li>
           </ul>
         </div>

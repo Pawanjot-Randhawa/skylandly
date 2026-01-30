@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { fetchDailySkylander, fetchSkylanderNames, submitGuess, GuessResponse } from '@/lib/api';
-import { loadGameState, saveGameState, addGuess, setDailyTarget, GameState } from '@/lib/gameState';
+import { loadGameState, saveGameState, addGuess, setDailyTarget, GameState, getCurrentLocalDate } from '@/lib/gameState';
 import { SKYLANDER_IMAGES } from '@/lib/data/skylandersImages';
 
 export default function GamePage() {
@@ -30,7 +30,7 @@ export default function GamePage() {
         
         // If no daily target set or new day, fetch it
         if (!state.dailyTarget) {
-          const dailyData = await fetchDailySkylander();
+          const dailyData = await fetchDailySkylander(state.currentDate || getCurrentLocalDate());
           const updatedState = setDailyTarget(state, dailyData.skylander_name);
           saveGameState(updatedState);
           setGameState(updatedState);
@@ -70,7 +70,7 @@ export default function GamePage() {
 
     try {
       setIsLoading(true);
-      const response = await submitGuess(selectedName);
+      const response = await submitGuess(selectedName, gameState.currentDate || getCurrentLocalDate());
       const newState = addGuess(gameState, response);
       saveGameState(newState);
       setGameState(newState);

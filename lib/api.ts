@@ -31,8 +31,9 @@ export interface SkylandersResponse {
 /**
  * Fetch today's daily Skylander name
  */
-export async function fetchDailySkylander(): Promise<DailyResponse> {
-  const response = await fetch(`${API_BASE_URL}/api/game/daily`);
+export async function fetchDailySkylander(date?: string): Promise<DailyResponse> {
+  const query = date ? `?date=${encodeURIComponent(date)}` : '';
+  const response = await fetch(`${API_BASE_URL}/api/game/daily${query}`);
   if (!response.ok) {
     throw new Error(`Failed to fetch daily Skylander: ${response.statusText}`);
   }
@@ -42,9 +43,13 @@ export async function fetchDailySkylander(): Promise<DailyResponse> {
 /**
  * Submit a guess for the daily Skylander
  */
-export async function submitGuess(skylanderName: string): Promise<GuessResponse> {
+export async function submitGuess(
+  skylanderName: string,
+  date?: string
+): Promise<GuessResponse> {
+  const dateQuery = date ? `&date=${encodeURIComponent(date)}` : '';
   const response = await fetch(
-    `${API_BASE_URL}/api/game/guess?skylander_name=${encodeURIComponent(skylanderName)}`,
+    `${API_BASE_URL}/api/game/guess?skylander_name=${encodeURIComponent(skylanderName)}${dateQuery}`,
     {
       method: 'POST',
     }

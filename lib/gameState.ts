@@ -7,22 +7,25 @@ const STORAGE_KEY = 'skylandly_game_state';
 export type GameStatus = 'playing' | 'won' | 'lost';
 
 export interface GameState {
-  currentDate: string; // YYYY-MM-DD format (UTC)
+  currentDate: string; // YYYY-MM-DD format (local time)
   dailyTarget: string; // The correct Skylander name for today
   guesses: GuessResponse[]; // Array of all guesses made today
   gameStatus: GameStatus;
   currentStreak: number;
-  lastPlayedDate: string; // YYYY-MM-DD format (UTC)
+  lastPlayedDate: string; // YYYY-MM-DD format (local time)
   totalGamesPlayed: number;
   totalWins: number;
 }
 
 /**
- * Get current UTC date in YYYY-MM-DD format
+ * Get current local date in YYYY-MM-DD format
  */
-export function getCurrentUTCDate(): string {
+export function getCurrentLocalDate(): string {
   const now = new Date();
-  return now.toISOString().split('T')[0];
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 /**
@@ -30,7 +33,7 @@ export function getCurrentUTCDate(): string {
  */
 function createInitialState(): GameState {
   return {
-    currentDate: getCurrentUTCDate(),
+    currentDate: getCurrentLocalDate(),
     dailyTarget: '',
     guesses: [],
     gameStatus: 'playing',
@@ -56,7 +59,7 @@ export function loadGameState(): GameState {
     }
 
     const state: GameState = JSON.parse(stored);
-    const today = getCurrentUTCDate();
+    const today = getCurrentLocalDate();
 
     // Backfill missing comparison fields from older stored guesses
     const normalizedGuesses = state.guesses.map((guess) => {
@@ -93,7 +96,7 @@ export function loadGameState(): GameState {
         totalGamesPlayed: state.totalGamesPlayed,
         totalWins: state.totalWins,
         lastPlayedDate: state.lastPlayedDate,
-        guesses: normalizedGuesses,
+        guesses: [],
       };
     }
 
@@ -143,7 +146,7 @@ export function addGuess(
     newState.currentStreak = state.currentStreak + 1;
     newState.totalWins = state.totalWins + 1;
     newState.totalGamesPlayed = state.totalGamesPlayed + 1;
-    newState.lastPlayedDate = getCurrentUTCDate();
+    newState.lastPlayedDate = getCurrentLocalDate();
   }
 
   return newState;
