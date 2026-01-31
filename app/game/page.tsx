@@ -148,20 +148,22 @@ export default function GamePage() {
 
   if (isLoading && !gameState) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl">Loading game...</p>
+      <div className="min-h-screen skylands-bg flex items-center justify-center p-8">
+        <div className="skylands-content">
+          <p className="text-xl skylands-subtitle">Loading game... (May take a few seconds)</p>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-xl text-red-500 mb-4">{error}</p>
+      <div className="min-h-screen skylands-bg flex items-center justify-center p-8">
+        <div className="skylands-content text-center">
+          <p className="text-xl text-red-200 mb-4">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-4 py-2 skylands-btn-primary rounded"
           >
             Retry
           </button>
@@ -173,14 +175,14 @@ export default function GamePage() {
   if (!gameState) return null;
 
   return (
-    <div className="min-h-screen p-8 bg-gray-50">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen p-8 skylands-bg">
+      <div className="max-w-4xl mx-auto skylands-content">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold mb-2 font-bungee">Skylandly</h1>
-          <p className="text-gray-600">Guess today&apos;s Skylander!</p>
+          <h1 className="text-5xl font-bold mb-2 font-bungee skylands-title">Skylandly</h1>
+          <p className="skylands-subtitle">Guess today&apos;s Skylander!</p>
           <div className="mt-4">
-            <span className="text-sm font-semibold px-3 py-1 bg-blue-100 text-blue-800 rounded">
+            <span className="text-sm font-semibold px-3 py-1 skylands-pill rounded">
               🔥 Streak: {gameState.currentStreak}
             </span>
           </div>
@@ -188,8 +190,8 @@ export default function GamePage() {
 
         {/* Game Status */}
         {gameState.gameStatus === 'won' && (
-          <div className="mb-6 p-4 bg-green-100 border border-green-400 rounded text-center">
-            <p className="text-green-800 font-semibold text-lg font-fredoka">
+          <div className="mb-6 p-4 rounded text-center skylands-card border border-emerald-300">
+            <p className="text-emerald-800 font-semibold text-lg font-fredoka">
               🎉 Congratulations! You guessed it in {gameState.guesses.length} {gameState.guesses.length === 1 ? 'try' : 'tries'}!
             </p>
           </div>
@@ -204,13 +206,13 @@ export default function GamePage() {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleInputKeyDown}
               placeholder="Type a Skylander name..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-manrope"
+              className="w-full px-4 py-3 rounded-lg skylands-input font-manrope"
               disabled={isLoading}
             />
 
             {/* Autocomplete Dropdown */}
             {showSuggestions && filteredSuggestions.length > 0 && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+              <div className="absolute z-10 w-full mt-1 rounded-lg shadow-lg max-h-60 overflow-y-auto skylands-card">
                 {filteredSuggestions.map((name, index) => {
                   const imageData = SKYLANDER_IMAGES[name];
                   const isSelected = index === selectedSuggestionIndex;
@@ -219,7 +221,7 @@ export default function GamePage() {
                       key={name}
                       onClick={() => handleSuggestionClick(name)}
                       className={`w-full flex items-center gap-3 px-4 py-2 text-left ${
-                        isSelected ? 'bg-blue-100' : 'hover:bg-blue-50'
+                        isSelected ? 'bg-amber-100/80' : 'hover:bg-amber-50'
                       }`}
                       aria-selected={isSelected}
                     >
@@ -230,7 +232,7 @@ export default function GamePage() {
                           className="w-10 h-10 object-contain"
                         />
                       )}
-                      <span className="font-fredoka font-medium">{name}</span>
+                      <span className="font-fredoka font-medium skylands-ink">{name}</span>
                     </button>
                   );
                 })}
@@ -242,10 +244,10 @@ export default function GamePage() {
         {/* Guesses Grid */}
         {gameState.guesses.length > 0 && (
           <div className="space-y-2">
-            <h2 className="text-xl font-semibold mb-4 font-fredoka">Your Guesses</h2>
+            <h2 className="text-xl font-semibold mb-4 font-fredoka skylands-subtitle">Your Guesses</h2>
             
             {/* Header Row */}
-            <div className="grid grid-cols-5 gap-2 font-semibold text-lg mb-2 font-fredoka">
+            <div className="grid grid-cols-5 gap-2 font-semibold text-lg mb-2 font-fredoka skylands-subtitle">
               <div className="text-center">Name</div>
               <div className="text-center">Gender</div>
               <div className="text-center">Species</div>
@@ -260,7 +262,7 @@ export default function GamePage() {
                 <div key={index} className="grid grid-cols-5 gap-2">
                   {/* Name with image */}
                   <div
-                    className={`p-3 rounded flex flex-col items-center justify-center ${
+                    className={`p-3 rounded flex flex-col items-center justify-center skylands-guess ${
                       guess.comparison.name.is_correct
                         ? 'bg-green-500 text-white'
                         : 'bg-red-500 text-white'
@@ -280,7 +282,7 @@ export default function GamePage() {
 
                   {/* Gender */}
                   <div
-                    className={`p-3 rounded flex items-center justify-center ${
+                    className={`p-3 rounded flex items-center justify-center skylands-guess ${
                       guess.comparison.gender.is_correct
                         ? 'bg-green-500 text-white'
                         : 'bg-red-500 text-white'
@@ -293,7 +295,7 @@ export default function GamePage() {
 
                   {/* Species */}
                   <div
-                    className={`p-3 rounded flex items-center justify-center ${
+                    className={`p-3 rounded flex items-center justify-center skylands-guess ${
                       guess.comparison.species?.is_correct
                         ? 'bg-green-500 text-white'
                         : 'bg-red-500 text-white'
@@ -306,7 +308,7 @@ export default function GamePage() {
 
                   {/* Element */}
                   <div
-                    className={`p-3 rounded flex flex-col items-center justify-center ${
+                    className={`p-3 rounded flex flex-col items-center justify-center skylands-guess ${
                       guess.comparison.element.is_correct
                         ? 'bg-green-500 text-white'
                         : 'bg-red-500 text-white'
@@ -326,7 +328,7 @@ export default function GamePage() {
 
                   {/* Game */}
                   <div
-                    className={`p-3 rounded flex flex-col items-center justify-center ${
+                    className={`p-3 rounded flex flex-col items-center justify-center skylands-guess ${
                       guess.comparison.game.is_correct
                         ? 'bg-green-500 text-white'
                         : 'bg-red-500 text-white'
@@ -349,14 +351,17 @@ export default function GamePage() {
 
         {/* Empty State */}
         {gameState.guesses.length === 0 && (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 skylands-subtitle">
             <p className="font-fredoka">Make your first guess to start playing!</p>
           </div>
         )}
 
         {/* Back to Home */}
-        <div className="mt-8 text-center">
-          <a href="/" className="text-blue-500 hover:underline font-fredoka">
+        <div className="mt-8 flex justify-center">
+          <a
+            href="/"
+            className="px-6 py-3 skylands-btn-ghost rounded-lg font-semibold text-center"
+          >
             ← Back to Home
           </a>
         </div>

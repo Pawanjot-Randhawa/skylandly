@@ -3,6 +3,19 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --skylands-amber-50: #fff4d6;
+  --skylands-amber-100: #ffe6b0;
+  --skylands-amber-200: #f7c970;
+  --skylands-amber-300: #f0b34a;
+  --skylands-amber-500: #d9901a;
+  --skylands-blue-950: #0b1633;
+  --skylands-blue-900: #112a55;
+  --skylands-blue-800: #1b3d72;
+  --skylands-blue-700: #255a9a;
+  --skylands-blue-600: #2f73b9;
+  --skylands-blue-500: #4f9ad6;
+  --skylands-ink: #1a2341;
+  --skylands-muted: #4a5a86;
 }
 
 @theme inline {
@@ -38,4 +51,143 @@ body {
 
 .font-titan {
   font-family: var(--font-titan-one);
+}
+
+.skylands-bg {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(255, 210, 125, 0.35), transparent 60%),
+    radial-gradient(900px 500px at 20% 15%, rgba(255, 255, 255, 0.25), transparent 60%),
+    radial-gradient(900px 500px at 85% 10%, rgba(120, 180, 255, 0.25), transparent 60%),
+    linear-gradient(180deg, #0b1633 0%, #112a55 35%, #1b3d72 55%, #3f7fc0 75%, #f4c86b 100%);
+  color: #f8fbff;
+}
+
+.skylands-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(900px 400px at 50% 85%, rgba(255, 200, 90, 0.22), transparent 65%),
+    radial-gradient(1200px 700px at 50% 100%, rgba(255, 255, 255, 0.12), transparent 70%),
+    linear-gradient(180deg, rgba(8, 22, 51, 0.25), rgba(8, 22, 51, 0.05));
+  pointer-events: none;
+}
+
+.skylands-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1px 1px at 15% 25%, rgba(255, 255, 255, 0.35), transparent 60%),
+    radial-gradient(1px 1px at 70% 20%, rgba(255, 255, 255, 0.3), transparent 60%),
+    radial-gradient(1px 1px at 80% 45%, rgba(255, 255, 255, 0.25), transparent 60%),
+    radial-gradient(1px 1px at 25% 65%, rgba(255, 255, 255, 0.2), transparent 60%),
+    radial-gradient(1px 1px at 60% 75%, rgba(255, 255, 255, 0.2), transparent 60%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.skylands-content {
+  position: relative;
+  z-index: 1;
+}
+
+.skylands-title {
+  color: #fff7e3;
+  text-shadow: 0 4px 14px rgba(8, 22, 51, 0.6);
+}
+
+.skylands-subtitle {
+  color: rgba(248, 251, 255, 0.82);
+}
+
+.skylands-ink {
+  color: var(--skylands-ink);
+}
+
+.skylands-muted {
+  color: var(--skylands-muted);
+}
+
+.skylands-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(245, 198, 102, 0.4);
+  box-shadow: 0 12px 30px rgba(8, 22, 51, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+}
+
+.skylands-chip {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(245, 198, 102, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.skylands-pill {
+  background: rgba(17, 42, 85, 0.6);
+  border: 1px solid rgba(255, 211, 128, 0.45);
+  color: #f8fbff;
+}
+
+.skylands-guess {
+  border: 1px solid rgba(255, 210, 125, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.skylands-btn-primary {
+  background: linear-gradient(180deg, #ffe6b0 0%, #f3c063 100%);
+  color: #1a2341;
+  border: 1px solid rgba(255, 229, 170, 0.9);
+  box-shadow: 0 10px 20px rgba(217, 144, 26, 0.35);
+  transition: transform 200ms, box-shadow 200ms, filter 200ms;
+}
+
+.skylands-btn-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+  box-shadow: 0 14px 26px rgba(217, 144, 26, 0.45);
+}
+
+.skylands-btn-secondary {
+  background: rgba(17, 42, 85, 0.6);
+  border: 1px solid rgba(255, 215, 140, 0.45);
+  color: #f8fbff;
+  backdrop-filter: blur(6px);
+  transition: transform 200ms, box-shadow 200ms, filter 200ms;
+}
+
+.skylands-btn-secondary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 12px 24px rgba(8, 22, 51, 0.4);
+}
+
+.skylands-btn-ghost {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(245, 198, 102, 0.4);
+  color: var(--skylands-ink);
+  transition: transform 200ms, box-shadow 200ms;
+}
+
+.skylands-btn-ghost:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(8, 22, 51, 0.18);
+}
+
+.skylands-input {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(245, 198, 102, 0.6);
+  color: var(--skylands-ink);
+  box-shadow: inset 0 1px 2px rgba(8, 22, 51, 0.12);
+}
+
+.skylands-input::placeholder {
+  color: rgba(74, 90, 134, 0.7);
+}
+
+.skylands-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 198, 102, 0.35);
+  border-color: rgba(245, 198, 102, 0.9);
 }

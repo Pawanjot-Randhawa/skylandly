@@ -73,20 +73,22 @@ export default function HistoryPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl">Loading history...</p>
+      <div className="min-h-screen skylands-bg flex items-center justify-center p-8">
+        <div className="skylands-content">
+          <p className="text-xl skylands-subtitle">Loading history... (May take a few seconds)</p>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-xl text-red-500 mb-4">{error}</p>
+      <div className="min-h-screen skylands-bg flex items-center justify-center p-8">
+        <div className="skylands-content text-center">
+          <p className="text-xl text-red-200 mb-4">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-4 py-2 skylands-btn-primary rounded"
           >
             Retry
           </button>
@@ -96,49 +98,49 @@ export default function HistoryPage() {
   }
 
   return (
-    <div className="min-h-screen p-8 bg-gray-50">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen p-8 skylands-bg">
+      <div className="max-w-4xl mx-auto skylands-content">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">Your Statistics</h1>
-          <p className="text-gray-600">Track your Skylandly performance</p>
+          <h1 className="text-4xl font-bold mb-2 skylands-title">Your Statistics</h1>
+          <p className="skylands-subtitle">Track your Skylandly performance</p>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <div className="text-3xl font-bold text-blue-600 mb-2">
+          <div className="p-6 rounded-lg text-center skylands-card">
+            <div className="text-3xl font-bold text-amber-600 mb-2">
               {stats.averageGuesses}
             </div>
-            <div className="text-sm text-gray-600">Average Guesses</div>
+            <div className="text-sm skylands-muted">Average Guesses</div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <div className="text-3xl font-bold text-green-600 mb-2">
+          <div className="p-6 rounded-lg text-center skylands-card">
+            <div className="text-3xl font-bold text-blue-600 mb-2">
               {stats.currentStreak}
             </div>
-            <div className="text-sm text-gray-600">Current Streak</div>
+            <div className="text-sm skylands-muted">Current Streak</div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <div className="text-3xl font-bold text-purple-600 mb-2">
+          <div className="p-6 rounded-lg text-center skylands-card">
+            <div className="text-3xl font-bold text-amber-500 mb-2">
               {stats.highestStreak}
             </div>
-            <div className="text-sm text-gray-600">Best Streak</div>
+            <div className="text-sm skylands-muted">Best Streak</div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <div className="text-3xl font-bold text-orange-600 mb-2">
+          <div className="p-6 rounded-lg text-center skylands-card">
+            <div className="text-3xl font-bold text-blue-700 mb-2">
               {stats.totalGamesPlayed}
             </div>
-            <div className="text-sm text-gray-600">Games Played</div>
+            <div className="text-sm skylands-muted">Games Played</div>
           </div>
         </div>
 
         {/* Information Card */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-          <h2 className="text-xl font-semibold mb-4">How It Works</h2>
-          <ul className="space-y-2 text-gray-700">
+        <div className="p-6 rounded-lg mb-8 skylands-card">
+          <h2 className="text-xl font-semibold mb-4 skylands-ink">How It Works</h2>
+          <ul className="space-y-2 skylands-muted">
             <li className="flex items-start">
               <span className="mr-2">🔥</span>
               <span>
@@ -165,10 +167,10 @@ export default function HistoryPage() {
         </div>
 
         {/* Game History */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-          <h2 className="text-xl font-semibold mb-4">Game History</h2>
+        <div className="p-6 rounded-lg mb-8 skylands-card">
+          <h2 className="text-xl font-semibold mb-4 skylands-ink">Game History</h2>
           {games.length === 0 ? (
-            <p className="text-gray-600">No games played yet.</p>
+            <p className="skylands-muted">No games played yet.</p>
           ) : (
             <div className="space-y-4">
               {games.map((game) => {
@@ -178,15 +180,15 @@ export default function HistoryPage() {
                 return (
                 <div
                   key={`${game.date}-${game.skylander_name ?? 'unknown'}`}
-                  className="border border-gray-200 rounded-lg p-5"
+                  className="rounded-lg p-5 skylands-card"
                 >
                   <div className="flex items-start justify-between gap-4 mb-4">
-                    <div className="text-xl font-semibold text-gray-800">
+                    <div className="text-xl font-semibold skylands-ink">
                       {game.date}
                     </div>
                     <span
-                      className={`inline-flex px-3 py-1 rounded-full text-base font-semibold ${
-                        game.won ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                      className={`inline-flex px-3 py-1 rounded-full text-base font-semibold skylands-chip ${
+                        game.won ? 'text-emerald-700' : 'text-rose-700'
                       }`}
                     >
                       {game.won ? 'Won' : 'Lost'}
@@ -196,7 +198,7 @@ export default function HistoryPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4 text-center">
                       <div>
-                        <div className="text-base font-semibold text-gray-600">Target</div>
+                        <div className="text-base font-semibold skylands-muted">Target</div>
                         <div className="mt-4 flex flex-col items-center gap-3">
                           {canRevealTarget && getSkylanderImage(game.skylander_name) ? (
                             <img
@@ -205,9 +207,9 @@ export default function HistoryPage() {
                               className="w-28 h-28 object-contain"
                             />
                           ) : (
-                            <div className="w-28 h-28 rounded bg-gray-100" />
+                            <div className="w-28 h-28 rounded bg-amber-50" />
                           )}
-                          <div className="font-fredoka text-3xl text-center">
+                          <div className="font-fredoka text-3xl text-center skylands-ink">
                             {targetName}
                           </div>
                         </div>
@@ -216,19 +218,19 @@ export default function HistoryPage() {
 
                     <div className="space-y-4">
                       <div>
-                        <div className="text-base font-semibold text-gray-600">Guesses</div>
-                        <div className="text-3xl font-bold text-gray-800">
+                        <div className="text-base font-semibold skylands-muted">Guesses</div>
+                        <div className="text-3xl font-bold skylands-ink">
                           {game.guess_count}
                         </div>
                       </div>
                       <div>
-                        <div className="text-base font-semibold text-gray-600">Guess List</div>
+                        <div className="text-base font-semibold skylands-muted">Guess List</div>
                         {game.guesses.length > 0 ? (
                           <div className="mt-2 flex flex-wrap gap-2">
                             {[...game.guesses].reverse().map((guess, index) => (
                               <div
                                 key={`${game.date}-${guess}-${index}`}
-                                className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-3 py-1.5"
+                                className="flex items-center gap-2 rounded-full px-3 py-1.5 skylands-chip"
                               >
                                 {getSkylanderImage(guess) ? (
                                   <img
@@ -237,14 +239,14 @@ export default function HistoryPage() {
                                     className="w-7 h-7 object-contain"
                                   />
                                 ) : (
-                                  <div className="w-7 h-7 rounded bg-gray-200" />
+                                  <div className="w-7 h-7 rounded bg-amber-100" />
                                 )}
-                                <span className="text-lg font-manrope">{guess}</span>
+                                <span className="text-lg font-manrope skylands-ink">{guess}</span>
                               </div>
                             ))}
                           </div>
                         ) : (
-                          <div className="mt-2 text-base text-gray-500">No guesses saved</div>
+                          <div className="mt-2 text-base skylands-muted">No guesses saved</div>
                         )}
                       </div>
                     </div>
@@ -260,14 +262,14 @@ export default function HistoryPage() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/game"
-            className="px-6 py-3 bg-blue-500 text-white rounded-lg font-semibold text-center hover:bg-blue-600 transition-colors"
+            className="px-6 py-3 skylands-btn-primary rounded-lg font-semibold text-center"
           >
             🎮 Play Today&apos;s Game
           </Link>
           
           <Link
             href="/"
-            className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold text-center hover:bg-gray-300 transition-colors"
+            className="px-6 py-3 skylands-btn-ghost rounded-lg font-semibold text-center"
           >
             ← Back to Home
           </Link>
