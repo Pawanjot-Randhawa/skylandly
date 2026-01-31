@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchDailySkylander, fetchSkylanderNames, submitGuess, GuessResponse } from '@/lib/api';
+import { fetchDailySkylander, fetchSkylanderNames, submitGuess, GuessResponse, saveHistoryResult } from '@/lib/api';
 import { loadGameState, saveGameState, addGuess, setDailyTarget, GameState, getCurrentLocalDate } from '@/lib/gameState';
+import { getBrowserId } from '@/lib/browserId';
 import { SKYLANDER_IMAGES } from '@/lib/data/skylandersImages';
 import { GAME_IMAGES } from '@/lib/data/gameImages';
 import { ELEMENT_IMAGES } from '@/lib/data/elementImages';
@@ -16,6 +17,7 @@ export default function GamePage() {
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [browserId, setBrowserId] = useState<string | null>(null);
 
   // Initialize game on mount
   useEffect(() => {
@@ -25,6 +27,9 @@ export default function GamePage() {
         
         // Load state from localStorage
         const state = loadGameState();
+
+        const id = getBrowserId();
+        setBrowserId(id);
         
         // Fetch Skylander names for autocomplete
         const names = await fetchSkylanderNames();
@@ -81,6 +86,22 @@ export default function GamePage() {
       const newState = addGuess(gameState, response);
       saveGameState(newState);
       setGameState(newState);
+
+      if (browserId) {
+        await saveHistoryResult({
+          browser_id: browserId,
+          date: newState.currentDate || getCurrentLocalDate(),
+          won: newState.gameStatus === 'won',
+          guess_count: newState.guesses.length,
+          skylander_name: newState.dailyTarget,
+          guesses: newState.guesses.map((guess) => guess.comparison.name.value),
+          current_streak: newState.currentStreak,
+          highest_streak: newState.highestStreak,
+          total_games_played: newState.totalGamesPlayed,
+          total_wins: newState.totalWins,
+          last_played_date: newState.lastPlayedDate || undefined,
+        });
+      }
       setInputValue('');
       setShowSuggestions(false);
       setIsLoading(false);

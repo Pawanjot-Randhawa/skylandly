@@ -12,6 +12,7 @@ export interface GameState {
   guesses: GuessResponse[]; // Array of all guesses made today
   gameStatus: GameStatus;
   currentStreak: number;
+  highestStreak: number;
   lastPlayedDate: string; // YYYY-MM-DD format (local time)
   totalGamesPlayed: number;
   totalWins: number;
@@ -38,6 +39,7 @@ function createInitialState(): GameState {
     guesses: [],
     gameStatus: 'playing',
     currentStreak: 0,
+    highestStreak: 0,
     lastPlayedDate: '',
     totalGamesPlayed: 0,
     totalWins: 0,
@@ -93,6 +95,7 @@ export function loadGameState(): GameState {
       return {
         ...createInitialState(),
         currentStreak: shouldResetStreak ? 0 : state.currentStreak,
+        highestStreak: state.highestStreak ?? state.currentStreak,
         totalGamesPlayed: state.totalGamesPlayed,
         totalWins: state.totalWins,
         lastPlayedDate: state.lastPlayedDate,
@@ -102,6 +105,7 @@ export function loadGameState(): GameState {
 
     return {
       ...state,
+      highestStreak: state.highestStreak ?? state.currentStreak ?? 0,
       guesses: normalizedGuesses,
     };
   } catch (error) {
@@ -143,7 +147,9 @@ export function addGuess(
 
   // If game just ended, update stats
   if (newStatus === 'won' && state.gameStatus === 'playing') {
-    newState.currentStreak = state.currentStreak + 1;
+    const updatedStreak = state.currentStreak + 1;
+    newState.currentStreak = updatedStreak;
+    newState.highestStreak = Math.max(state.highestStreak || 0, updatedStreak);
     newState.totalWins = state.totalWins + 1;
     newState.totalGamesPlayed = state.totalGamesPlayed + 1;
     newState.lastPlayedDate = getCurrentLocalDate();
