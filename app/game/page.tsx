@@ -88,7 +88,7 @@ export default function GamePage() {
       setGameState(newState);
 
       if (browserId) {
-        await saveHistoryResult({
+        saveHistoryResult({
           browser_id: browserId,
           date: newState.currentDate || getCurrentLocalDate(),
           won: newState.gameStatus === 'won',
@@ -100,6 +100,8 @@ export default function GamePage() {
           total_games_played: newState.totalGamesPlayed,
           total_wins: newState.totalWins,
           last_played_date: newState.lastPlayedDate || undefined,
+        }).catch((err) => {
+          console.error('Failed to save history result:', err);
         });
       }
       setInputValue('');

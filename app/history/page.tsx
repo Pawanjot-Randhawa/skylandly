@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { fetchAverageGuesses, fetchHistoryGames, fetchHistorySummary, HistoryGameResponse } from '@/lib/api';
 import { getBrowserId } from '@/lib/browserId';
+import { getCurrentLocalDate } from '@/lib/gameState';
 import { SKYLANDER_IMAGES } from '@/lib/data/skylandersImages';
 
 const skylanderKeyMap = Object.keys(SKYLANDER_IMAGES).reduce<Record<string, string>>(
@@ -32,6 +33,7 @@ export default function HistoryPage() {
   const [games, setGames] = useState<HistoryGameResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const today = useMemo(() => getCurrentLocalDate(), []);
 
   const browserId = useMemo(() => getBrowserId(), []);
 
@@ -169,7 +171,11 @@ export default function HistoryPage() {
             <p className="text-gray-600">No games played yet.</p>
           ) : (
             <div className="space-y-4">
-              {games.map((game) => (
+              {games.map((game) => {
+                const isPastDay = game.date < today;
+                const canRevealTarget = game.won || isPastDay;
+                const targetName = canRevealTarget ? (game.skylander_name || 'Unknown') : '?????';
+                return (
                 <div
                   key={`${game.date}-${game.skylander_name ?? 'unknown'}`}
                   className="border border-gray-200 rounded-lg p-5"
@@ -192,7 +198,7 @@ export default function HistoryPage() {
                       <div>
                         <div className="text-base font-semibold text-gray-600">Target</div>
                         <div className="mt-4 flex flex-col items-center gap-3">
-                          {getSkylanderImage(game.skylander_name) ? (
+                          {canRevealTarget && getSkylanderImage(game.skylander_name) ? (
                             <img
                               src={getSkylanderImage(game.skylander_name)?.img}
                               alt={game.skylander_name || 'Skylander'}
@@ -202,7 +208,7 @@ export default function HistoryPage() {
                             <div className="w-28 h-28 rounded bg-gray-100" />
                           )}
                           <div className="font-fredoka text-3xl text-center">
-                            {game.skylander_name || 'Unknown'}
+                            {targetName}
                           </div>
                         </div>
                       </div>
@@ -219,7 +225,7 @@ export default function HistoryPage() {
                         <div className="text-base font-semibold text-gray-600">Guess List</div>
                         {game.guesses.length > 0 ? (
                           <div className="mt-2 flex flex-wrap gap-2">
-                            {game.guesses.map((guess, index) => (
+                            {[...game.guesses].reverse().map((guess, index) => (
                               <div
                                 key={`${game.date}-${guess}-${index}`}
                                 className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-3 py-1.5"
@@ -244,7 +250,8 @@ export default function HistoryPage() {
                     </div>
                   </div>
                 </div>
-              ))}
+              );
+              })}
             </div>
           )}
         </div>
