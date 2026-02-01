@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { fetchDailySkylander, fetchSkylanderNames, submitGuess, GuessResponse, saveHistoryResult } from '@/lib/api';
 import { loadGameState, saveGameState, addGuess, setDailyTarget, GameState, getCurrentLocalDate } from '@/lib/gameState';
 import { getBrowserId } from '@/lib/browserId';
@@ -18,6 +18,8 @@ export default function GamePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [browserId, setBrowserId] = useState<string | null>(null);
+  const suggestionsContainerRef = useRef<HTMLDivElement | null>(null);
+  const suggestionButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   // Initialize game on mount
   useEffect(() => {
@@ -76,6 +78,14 @@ export default function GamePage() {
       setSelectedSuggestionIndex(-1);
     }
   }, [inputValue, skylanderNames, gameState]);
+
+  useEffect(() => {
+    if (!showSuggestions || selectedSuggestionIndex < 0) return;
+    const selectedButton = suggestionButtonRefs.current[selectedSuggestionIndex];
+    if (selectedButton) {
+      selectedButton.scrollIntoView({ block: 'nearest' });
+    }
+  }, [showSuggestions, selectedSuggestionIndex, filteredSuggestions.length]);
 
   const handleGuess = async (selectedName: string) => {
     if (!gameState || gameState.gameStatus !== 'playing') return;
@@ -212,13 +222,19 @@ export default function GamePage() {
 
             {/* Autocomplete Dropdown */}
             {showSuggestions && filteredSuggestions.length > 0 && (
-              <div className="absolute z-10 w-full mt-1 rounded-lg shadow-lg max-h-60 overflow-y-auto skylands-card">
+              <div
+                ref={suggestionsContainerRef}
+                className="absolute z-10 w-full mt-1 rounded-lg shadow-lg max-h-60 overflow-y-auto skylands-card"
+              >
                 {filteredSuggestions.map((name, index) => {
                   const imageData = SKYLANDER_IMAGES[name];
                   const isSelected = index === selectedSuggestionIndex;
                   return (
                     <button
                       key={name}
+                      ref={(el) => {
+                        suggestionButtonRefs.current[index] = el;
+                      }}
                       onClick={() => handleSuggestionClick(name)}
                       className={`w-full flex items-center gap-3 px-4 py-2 text-left ${
                         isSelected ? 'bg-amber-100/80' : 'hover:bg-amber-50'
