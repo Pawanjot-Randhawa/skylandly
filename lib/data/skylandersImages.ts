@@ -386,7 +386,7 @@ export const SKYLANDER_IMAGES: Record<string, { img: string }> = {
   "Trigger Snappy": {
     "img": "https://skylanderswiki.com/w/images/Skylanders_Images/thumb/5/5a/Trigger_Snappy_Icon.png/180px-Trigger_Snappy_Icon.png"
   },
-  "Wind-Up": {
+  "Wind-up": {
     "img": "https://skylanderswiki.com/w/images/Skylanders_Images/thumb/5/5a/Wind-Up_Icon.png/180px-Wind-Up_Icon.png"
   },
   "Bat Spin": {
@@ -545,10 +545,7 @@ export const SKYLANDER_IMAGES: Record<string, { img: string }> = {
   "Spotlight": {
     "img": "https://skylanderswiki.com/w/images/Skylanders_Images/thumb/5/54/Spotlight_Icon.png/180px-Spotlight_Icon.png"
   },
-  "Kaos": {
-    "img": "https://skylanderswiki.com/w/images/Skylanders_Images/thumb/0/05/Kaos_Icon.png/180px-Kaos_Icon.png"
+  "Deja Vu": {
+    "img": "https://skylanderswiki.com/w/images/Skylanders_Images/thumb/d/d5/D%C3%A9j%C3%A0_Vu_Icon.png/180px-D%C3%A9j%C3%A0_Vu_Icon.png"
   },
-  "Imaginator": {
-    "img": "https://skylanderswiki.com/w/images/Skylanders_Images/thumb/b/b9/Imaginators_Icon.png/180px-Imaginators_Icon.png"
-  }
 };
